@@ -158,7 +158,7 @@ nav h1{
 
 #sort{
     height: 30px;
-    border: 1px solid var(--secondary-text);
+    border: 1px solid var (--secondary-text);
     color: var(--primary-text);
     background-color: transparent;
     padding: 0px 5px;
@@ -196,6 +196,7 @@ ul li{
     border-radius: .2rem;
     margin: 5px 0px;
     padding: 20px;
+    cursor: move;
 }
 
 .task-icons {
@@ -217,7 +218,7 @@ ul li{
     width: 22px;
     height: 22px;
     cursor: pointer;
-    color: #1E1E2E  ;
+    color: #1E1E2E;
     accent-color: var(--button-background);
 }
 .task_check:checked{
@@ -231,3 +232,11 @@ ul li{
     background-color: var(--completed-task);
 }
 
+.placeholder {
+    height: 45px;
+    background-color: var(--accent-color);
+    border-radius: .2rem;
+    margin: 5px 0px;
+    padding: 20px;
+    opacity: 0.5;
+}
