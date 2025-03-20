@@ -1,6 +1,8 @@
 //define variables
 const add_task_input = document.getElementById("add-task-input");
+const add_task_reminder = document.getElementById("add-task-reminder");
 const tasks_list = document.getElementById("tasks");
+let currentlyEditingTask = null;
 const task_buttons = `
     <div class="task-icons">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="edit-task-icon">
@@ -43,31 +45,61 @@ function darkThemeBtnToggle(){
 // add task
 function add_task(){
     if (add_task_input.value.trim() === ""){
-        alert("you should type something and then hit the button ")
+        alert("You should type something and then hit the button");
     }
-    else{
+    else if (add_task_reminder.value === ""){
+        alert("You should set a reminder date and time");
+    }
+    else {
         let newElement = document.createElement("li");
         newElement.draggable = true;
         newElement.ondragstart = drag;
         newElement.ondrop = drop;
         newElement.ondragover = allowDrop;
         newElement.ondragleave = leave;
-        newElement.innerHTML = add_task_input.value.trim() + task_buttons;
+        newElement.innerHTML = `
+            ${add_task_input.value.trim()}
+            <span class="task-reminder">${new Date(add_task_reminder.value).toLocaleString()}</span>
+            ${task_buttons}
+        `;
+        newElement.setAttribute('data-reminder', new Date(add_task_reminder.value).getTime());
         add_task_input.value = "";
+        add_task_reminder.value = "2099-12-20T00:00";
         tasks_list.appendChild(newElement);
     }
+    sessionStorage.setItem("tasks_data", tasks_list.innerHTML);
 }
 
 //trigger add function by pressing enter in task input
-add_task_input.addEventListener('keydown',function(event){
-    if(event.key==='Enter')
+add_task_input.addEventListener('keydown', function(event){
+    if(event.key === 'Enter')
         add_task();
 });
 
-//event listener for deleting , checking and editing
+//event listener for deleting, checking, and editing
 tasks_list.addEventListener('click', function(event) {
     if (event.target.closest('.edit-task-icon')) {
         // edit icon is clicked
+        if (currentlyEditingTask !== null) {
+            saveTask(currentlyEditingTask);
+        }
+        const task = event.target.closest('li');
+        const taskText = task.firstChild.textContent.trim();
+        const reminderText = task.querySelector('.task-reminder').textContent.trim();
+        task.innerHTML = `
+            <input type="text" class="edit-task-input" value="${taskText}" />
+            <input type="datetime-local" class="edit-task-reminder" value="${new Date(reminderText).toISOString().slice(0, 16)}" />
+            ${task_buttons}
+        `;
+        currentlyEditingTask = task;
+        const editTaskInput = task.querySelector('.edit-task-input');
+        const editTaskReminder = task.querySelector('.edit-task-reminder');
+        editTaskInput.focus();
+        editTaskInput.addEventListener('keydown', function(event) {
+            if(event.key === 'Enter') {
+                saveTask(task);
+            }
+        });
     }
     else if (event.target.closest('.del-task-icon')) {
         // del icon is clicked
@@ -77,9 +109,30 @@ tasks_list.addEventListener('click', function(event) {
         // check icon is clicked
         event.target.closest('li').classList.toggle('checked');
     }
+    sessionStorage.setItem("tasks_data", tasks_list.innerHTML);
 });
 
-// drag and drop functions
+document.addEventListener('click', function(event) {
+    if (currentlyEditingTask !== null && !currentlyEditingTask.contains(event.target) && !event.target.closest('.edit-task-icon')) {
+        saveTask(currentlyEditingTask);
+    }
+});
+
+function saveTask(task) {
+    const editTaskInput = task.querySelector('.edit-task-input');
+    const editTaskReminder = task.querySelector('.edit-task-reminder');
+    if (editTaskInput && editTaskReminder) {
+        task.innerHTML = `
+            ${editTaskInput.value.trim()}
+            <span class="task-reminder">${new Date(editTaskReminder.value).toLocaleString()}</span>
+            ${task_buttons}
+        `;
+        task.setAttribute('data-reminder', new Date(editTaskReminder.value).getTime());
+        currentlyEditingTask = null;
+    }
+}
+
+//drag and drop functions
 function allowDrop(event) {
     event.preventDefault();
     const target = event.target.closest('li');
@@ -129,3 +182,41 @@ new MutationObserver(assignTaskIds).observe(tasks_list, { childList: true});
 
 // initialize task IDs for existing tasks
 assignTaskIds();
+
+// check reminders
+function checkReminders() {
+    const now = Date.now();
+    const tasks = tasks_list.children;
+    for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
+        const reminderTime = parseInt(task.getAttribute('data-reminder'));
+        if (reminderTime <= now && !task.classList.contains('reminded')) {
+            alert(`Reminder: ${task.textContent.trim()}`);
+            task.classList.add('reminded');
+        }
+    }
+}
+
+// check reminders every minute
+setInterval(checkReminders, 60000);
+
+// check reminders immediately on page load
+checkReminders();
+
+// sort tasks
+function sortTasks() {
+    const sortOption = document.getElementById('sort').value;
+    let tasks = Array.from(tasks_list.children);
+
+    if (sortOption === 'latest') {
+        tasks.sort((a, b) => parseInt(b.id.split('-')[1]) - parseInt(a.id.split('-')[1]));
+    } else if (sortOption === 'deadline') {
+        tasks.sort((a, b) => parseInt(a.getAttribute('data-reminder')) - parseInt(b.getAttribute('data-reminder')));
+    }
+
+    for (let task of tasks) {
+        tasks_list.appendChild(task);
+    }
+}
+
+tasks_list.innerHTML = sessionStorage.getItem("tasks_data");
