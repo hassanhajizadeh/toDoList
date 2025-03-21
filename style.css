@@ -36,9 +36,13 @@
     box-sizing: border-box;
     font-family: sans-serif;
 }
+
+
 body{
     background-color: var(--background);
 }
+
+/*nav section styles including dark-light-mode button and the name of app*/
 nav{
     display: flex;
     width: 100%;
@@ -49,10 +53,13 @@ nav{
     background-color: var(--task-background);
     color: var(--dark-primary-text);
 }
+/*name of app*/
 nav h1{
     text-transform: uppercase;
     color: var(--primary-text);
 }
+
+/*dark-light-mode button section*/
 #dark-theme-btn{
     display: none;
 }
@@ -77,6 +84,9 @@ nav h1{
 
 /*----------------------------------------------*/
 
+/*content section containing add-task and sorting functions  and tasks section*/
+
+/*content section as a container for the task-control and tasks*/
 #content{
     width: 100%;
     display: flex;
@@ -86,6 +96,7 @@ nav h1{
     overflow-y: auto;
 }
 
+/*task-controls section : a container for add-task and sorting sections  */
 #task-controls{
     display: flex;
     flex-direction: column;
@@ -98,6 +109,7 @@ nav h1{
     margin-bottom: 10px;
 }
 
+/*container for add-task inputs and add button  */
 #add-task {
     display: flex;
     flex-direction: column;
@@ -106,43 +118,7 @@ nav h1{
     margin-bottom: 10px;
 }
 
-#add-task-icon{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--secondary-text);
-    border-radius: .4rem;
-    cursor: pointer;
-}
-#add-task-icon:hover{
-    background-color: var(--accent-color);
-}
-#add-task-icon:hover > *{
-    background-color: var(--background);
-}
-#add-task-icon:hover > .plus-bar:first-child{
-    transform: rotateZ(180deg);
-}
-#add-task-icon:hover > .plus-bar:last-child{
-    transform: rotateZ(90deg);
-}
-
-.plus-bar{
-    transition: .3s ease all;
-    position: absolute;
-    height: 2px;
-    width: 70%;
-    background-color: var(--primary-text);
-}
-.plus-bar:nth-child(1){
-    transform: rotateZ(90deg);
-}
-
+/*task-name input section in adding task  */
 #add-task input[type="text"]{
     background-color: var(--button-hover);
     color: var(--primary-text);
@@ -153,6 +129,8 @@ nav h1{
     width: 100%;
     padding: 10px 20px;
 }
+
+/*task-reminder-date input section in adding task  */
 #add-task input[type="datetime-local"]{
     background-color: var(--button-hover);
     color: var(--primary-text);
@@ -176,6 +154,7 @@ nav h1{
     cursor: pointer;
     font-size: 15pt;
 }
+
 #add-task-button:hover {
     background-color: var(--button-hover);
 }
@@ -184,6 +163,7 @@ nav h1{
     outline: 1px solid var(--accent-color);
 }
 
+/*sorting section */
 #sort{
     height: 30px;
     border: 1px solid var(--secondary-text);
@@ -200,6 +180,8 @@ nav h1{
     cursor: pointer;
 }
 
+
+/*tasks section : a container for tasks*/
 #tasks{
     display: flex;
     flex-direction: column;
@@ -213,7 +195,9 @@ nav h1{
     overflow-y: auto;
 }
 
-ul li{
+
+/*task styling*/
+#tasks li{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -227,6 +211,7 @@ ul li{
     cursor: move;
 }
 
+/*.task-icons : a container for task buttons (edit - delete - check )*/
 .task-icons{
     display: flex;
     width: 120px;
@@ -249,25 +234,26 @@ ul li{
     color: #1E1E2E;
     accent-color: var(--button-background);
 }
+
 .task_check:checked{
     accent-color: var(--accent-color);
 }
 
+/*a class for showing a task is checked*/
 .checked{
     text-decoration: line-through var(--accent-color);
     text-decoration-thickness: 2px;
     background-color: var(--completed-task);
 }
 
+/*a class for reordering tasks via drag and drop and showing it will place on which tasks before or after */
 .placeholder{
-    height: 45px;
-    background-color: var(--accent-color);
-    border-radius: .2rem;
-    margin: 5px 0px;
-    padding: 20px;
-    opacity: 0.5;
+    background-color: var(--accent-color) !important;
+    opacity: 0.8;
 }
 
+
+/*inputs for edit section of the task*/
 .edit-task-input,
 .edit-task-reminder {
     background-color: var(--button-hover);

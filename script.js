@@ -2,7 +2,11 @@
 const add_task_input = document.getElementById("add-task-input");
 const add_task_reminder = document.getElementById("add-task-reminder");
 const tasks_list = document.getElementById("tasks");
+
+//element that currently editing
 let currentlyEditingTask = null;
+
+//task manipulation icons (delete , edit and check)
 const task_buttons = `
     <div class="task-icons">
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" class="edit-task-icon">
@@ -15,7 +19,8 @@ const task_buttons = `
     </div>
 `;
 
-//start dark-light-theme button section
+//dark-light-theme function to changing the colors palette
+// to dark or light and moving the bullet inside the dark-light-theme button
 function darkThemeBtnToggle(){
     const light_btn = document.getElementById('dark-theme-btn');
     const bullet = document.getElementById("bullet");
@@ -44,29 +49,42 @@ function darkThemeBtnToggle(){
 
 // add task
 function add_task(){
-    if (add_task_input.value.trim() === ""){
+    if (add_task_input.value.trim() === ""){ //checks if task name is set
         alert("You should type something and then hit the button");
     }
-    else if (add_task_reminder.value === ""){
+    else if (add_task_reminder.value === ""){ //checks if task timer is set
         alert("You should set a reminder date and time");
     }
-    else {
-        let newElement = document.createElement("li");
-        newElement.draggable = true;
-        newElement.ondragstart = drag;
-        newElement.ondrop = drop;
-        newElement.ondragover = allowDrop;
-        newElement.ondragleave = leave;
+    else { //adding new task by creating an li element
+        let newElement = document.createElement("li"); 
+        newElement.draggable = true; //make element draggable
+        newElement.ondragstart = drag;      //assigning functions for each drag and drop scenario 
+        newElement.ondrop = drop;           //assigning functions for each drag and drop scenario 
+        newElement.ondragover = allowDrop;  //assigning functions for each drag and drop scenario 
+        newElement.ondragleave = leave;     //assigning functions for each drag and drop scenario 
+
+        //inserting task-name , task-reminder-date and task buttons (edit , delete , check) in new element
         newElement.innerHTML = `
             ${add_task_input.value.trim()}
             <span class="task-reminder">${new Date(add_task_reminder.value).toLocaleString()}</span>
             ${task_buttons}
         `;
+
+        // Setting a custom 'data-reminder' attribute on the new element, with the value of entered reminder date in seconds
         newElement.setAttribute('data-reminder', new Date(add_task_reminder.value).getTime());
+
+        // removing and setting by default the input content in add task section
         add_task_input.value = "";
         add_task_reminder.value = "2099-12-20T00:00";
+
+        //adding the task to the tasks list
         tasks_list.appendChild(newElement);
     }
+    save_data(); //saving the data of task in an external file
+}
+
+// saving the data of tasks container in a external file 
+function save_data(){
     sessionStorage.setItem("tasks_data", tasks_list.innerHTML);
 }
 
@@ -78,46 +96,78 @@ add_task_input.addEventListener('keydown', function(event){
 
 //event listener for deleting, checking, and editing
 tasks_list.addEventListener('click', function(event) {
+
+    // checks if the clicked element is the edit icon
     if (event.target.closest('.edit-task-icon')) {
-        // edit icon is clicked
+        
+        // if a task is already being edited, save it before editing a new one
         if (currentlyEditingTask !== null) {
             saveTask(currentlyEditingTask);
         }
+
+        // gets the task element (the closest <li> parent)
         const task = event.target.closest('li');
+        // extracts the current task text and reminder text of the 
         const taskText = task.firstChild.textContent.trim();
         const reminderText = task.querySelector('.task-reminder').textContent.trim();
+        //changing the task content for editing data
         task.innerHTML = `
             <input type="text" class="edit-task-input" value="${taskText}" />
             <input type="datetime-local" class="edit-task-reminder" value="${new Date(reminderText).toISOString().slice(0, 16)}" />
             ${task_buttons}
         `;
+        
+        //adding the task to currently editing task
         currentlyEditingTask = task;
+
+        
         const editTaskInput = task.querySelector('.edit-task-input');
         const editTaskReminder = task.querySelector('.edit-task-reminder');
         editTaskInput.focus();
+        
+        //shows date-time picker when clicking on the editTaskReminder input
+        editTaskReminder.addEventListener("focus", function() {
+            if (this.showPicker) {
+                this.showPicker();
+            }
+        });
+        
+        //save task when enter key pressed in edit task name input
         editTaskInput.addEventListener('keydown', function(event) {
             if(event.key === 'Enter') {
                 saveTask(task);
             }
         });
     }
+    //deleting targeted task
     else if (event.target.closest('.del-task-icon')) {
         // del icon is clicked
         event.target.closest('li').remove();
     }
+
+    //changing targeted task class to ckecked
     else if (event.target.closest('.task_check')) {
         // check icon is clicked
         event.target.closest('li').classList.toggle('checked');
     }
-    sessionStorage.setItem("tasks_data", tasks_list.innerHTML);
+    save_data();
 });
 
+//event listener for clicking on add-task-reminder input to show local date-time picker
+document.getElementById('add-task-reminder').addEventListener("focus", function() {
+    if (this.showPicker) {
+        this.showPicker();
+    }
+});
+
+// detects clicks outside the currently edited task and saves the task if the click is not on the task or its edit icon.
 document.addEventListener('click', function(event) {
     if (currentlyEditingTask !== null && !currentlyEditingTask.contains(event.target) && !event.target.closest('.edit-task-icon')) {
         saveTask(currentlyEditingTask);
     }
 });
 
+//saving task and null the curretly editing task
 function saveTask(task) {
     const editTaskInput = task.querySelector('.edit-task-input');
     const editTaskReminder = task.querySelector('.edit-task-reminder');
@@ -133,6 +183,7 @@ function saveTask(task) {
 }
 
 //drag and drop functions
+// Allows dropping by preventing the default behavior and adding a 'placeholder' class to the nearest 'li' element.
 function allowDrop(event) {
     event.preventDefault();
     const target = event.target.closest('li');
@@ -141,6 +192,7 @@ function allowDrop(event) {
     }
 }
 
+// Removes the 'placeholder' class when the dragged item leaves a list item.
 function leave(event) {
     const target = event.target.closest('li');
     if (target && target.classList.contains('placeholder')) {
@@ -148,10 +200,12 @@ function leave(event) {
     }
 }
 
+// Stores the dragged element's ID.
 function drag(event) {
     event.dataTransfer.setData("text", event.target.id);
 }
 
+// Handles dropping by repositioning the dragged element within the list.
 function drop(event) {
     event.preventDefault();
     const dragElement = document.getElementById(event.dataTransfer.getData("text"));
@@ -166,7 +220,8 @@ function drop(event) {
             tasks_list.insertBefore(dragElement, dropTarget);
         }
     }
-    leave(event); // remove placeholder class after drop
+    // remove placeholder class after drop
+    leave(event); 
 }
 
 // assign unique IDs to tasks
