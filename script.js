@@ -147,8 +147,17 @@ tasks_list.addEventListener('click', function(event) {
 
     //changing targeted task class to ckecked
     else if (event.target.closest('.task_check')) {
-        // check icon is clicked
+        // toggling li class to checked and unchecked
         event.target.closest('li').classList.toggle('checked');
+
+        // Save the checkbox's checked state in the HTML attribute,  
+        // so it can be retrieved later from sessionStorage.
+        if(event.target.closest('li').classList.contains('checked')){
+            event.target.closest('.task_check').setAttribute("checked", "checked");
+        }
+        else{
+            event.target.closest('.task_check').removeAttribute("checked");
+        }
     }
     save_data();
 });
