@@ -60,12 +60,12 @@ function add_task(){
         newElement.draggable = true; //make element draggable
         newElement.ondragstart = drag;      //assigning functions for each drag and drop scenario 
         newElement.ondrop = drop;           //assigning functions for each drag and drop scenario 
-        newElement.ondragover = allowDrop;  //assigning functions for each drag and drop scenario 
+        newElement.ondragover = dragOver;  //assigning functions for each drag and drop scenario 
         newElement.ondragleave = leave;     //assigning functions for each drag and drop scenario 
 
         //inserting task-name , task-reminder-date and task buttons (edit , delete , check) in new element
         newElement.innerHTML = `
-            ${add_task_input.value.trim()}
+            <p class='task-name'>${add_task_input.value.trim()}</p>
             <span class="task-reminder">${new Date(add_task_reminder.value).toLocaleString()}</span>
             ${task_buttons}
         `;
@@ -96,7 +96,6 @@ add_task_input.addEventListener('keydown', function(event){
 
 //event listener for deleting, checking, and editing
 tasks_list.addEventListener('click', function(event) {
-
     // checks if the clicked element is the edit icon
     if (event.target.closest('.edit-task-icon')) {
         
@@ -108,21 +107,28 @@ tasks_list.addEventListener('click', function(event) {
         // gets the task element (the closest <li> parent)
         const task = event.target.closest('li');
         // extracts the current task text and reminder text of the 
-        const taskText = task.firstChild.textContent.trim();
+        const taskText = task.querySelector('.task-name').textContent.trim();
         const reminderText = task.querySelector('.task-reminder').textContent.trim();
         //changing the task content for editing data
         task.innerHTML = `
-            <input type="text" class="edit-task-input" value="${taskText}" />
-            <input type="datetime-local" class="edit-task-reminder" value="${new Date(reminderText).toISOString().slice(0, 16)}" />
+            <div class="edit-inputs-container">
+                <input type="text" class="edit-task-input" value="${taskText}" />
+                <input type="datetime-local" class="edit-task-reminder" value="${new Date(reminderText).toISOString().slice(0, 16)}" />
+            </div>
             ${task_buttons}
         `;
-        
+
+        task.classList.add('task-on-edit');
         //adding the task to currently editing task
         currentlyEditingTask = task;
 
+        //disabling checkbox during edit
+        task.lastElementChild.lastElementChild.disabled = true;
+        task.lastElementChild.lastElementChild.style.cursor = "not-allowed";
         
         const editTaskInput = task.querySelector('.edit-task-input');
         const editTaskReminder = task.querySelector('.edit-task-reminder');
+
         editTaskInput.focus();
         
         //shows date-time picker when clicking on the editTaskReminder input
@@ -154,9 +160,11 @@ tasks_list.addEventListener('click', function(event) {
         // so it can be retrieved later from sessionStorage.
         if(event.target.closest('li').classList.contains('checked')){
             event.target.closest('.task_check').setAttribute("checked", "checked");
+            event.target.closest('li').classList.add('reminded');
         }
         else{
             event.target.closest('.task_check').removeAttribute("checked");
+            event.target.closest('li').classList.remove('reminded');
         }
     }
     save_data();
@@ -181,8 +189,9 @@ function saveTask(task) {
     const editTaskInput = task.querySelector('.edit-task-input');
     const editTaskReminder = task.querySelector('.edit-task-reminder');
     if (editTaskInput && editTaskReminder) {
+        task.classList.remove('task-on-edit');
         task.innerHTML = `
-            ${editTaskInput.value.trim()}
+            <p class='task-name'>${editTaskInput.value.trim()}</p>
             <span class="task-reminder">${new Date(editTaskReminder.value).toLocaleString()}</span>
             ${task_buttons}
         `;
@@ -193,7 +202,7 @@ function saveTask(task) {
 
 //drag and drop functions
 // Allows dropping by preventing the default behavior and adding a 'placeholder' class to the nearest 'li' element.
-function allowDrop(event) {
+function dragOver(event) {
     event.preventDefault();
     const target = event.target.closest('li');
     if (target && !target.classList.contains('placeholder')) {
@@ -238,6 +247,8 @@ function assignTaskIds() {
     const tasks = tasks_list.children;
     for (let i = 0; i < tasks.length; i++) {
         tasks[i].id = 'task-' + i;
+        //saving the tasks that where editing
+        saveTask(tasks[i]);
     }
 }
 
@@ -264,8 +275,6 @@ function checkReminders() {
 // check reminders every minute
 setInterval(checkReminders, 60000);
 
-// check reminders immediately on page load
-checkReminders();
 
 // sort tasks
 function sortTasks() {
@@ -283,4 +292,23 @@ function sortTasks() {
     }
 }
 
-tasks_list.innerHTML = sessionStorage.getItem("tasks_data");
+//retoring tasks from sessionStorage and rebinding drag and drop functionalities
+function restoreTasks() {
+    const savedTasks = sessionStorage.getItem("tasks_data");
+    if (savedTasks) {
+        tasks_list.innerHTML = savedTasks;
+        rebindEventListeners(); // Rebind drag-and-drop listeners
+    }
+}
+
+function rebindEventListeners() {
+    document.querySelectorAll('li').forEach(task => {
+        task.ondragstart = drag;      
+        task.ondrop = drop;           
+        task.ondragover = dragOver;  
+        task.ondragleave = leave; 
+        
+    });
+}
+// Call restoreTasks on page load
+window.onload = restoreTasks;
