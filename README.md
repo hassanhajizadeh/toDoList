@@ -1,4 +1,4 @@
-TO-DO List App
+A Fully Responsive TO-DO List App
 Created using HTML , CSS , Vanilla JS
 
 ![alt text](<Screenshot from 2025-03-22 17-18-38.png>)
