@@ -28,14 +28,14 @@
             <!-- start adding task section -->
             <div id="add-task">
                 <input type="text" placeholder="Add Your Task Name" id="add-task-input" autofocus/>
-                <input type="datetime-local" id="add-task-reminder" value="2099-12-20T00:00"/>
+                <input type="datetime-local" id="add-task-reminder" value="2028-12-20T00:00"/>
                 <button id="add-task-button" onclick="add_task()">Add</button>
             </div>
             <!-- end adding task section -->
 
             <!-- start sorting task section -->            
             <select id="sort" onchange="sortTasks()">
-                <option value="latest">Latest</option>
+                <option value="latest">Oldest</option>
                 <option value="deadline">Deadline</option>
             </select>
             <!-- end sorting task section -->            
@@ -47,6 +47,10 @@
         <!--end tasks section-->
     </div>
     <!-- end content section containing add-task and sorting functions  and tasks section-->
+
+    <!-- start alert section -->
+    <div id="alert-message"><p>message</p><button onclick=close_alert()>&times;</button></div>
+    <!-- end alert section -->
 
     <script src="script.js"></script>
 </body>

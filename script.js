@@ -2,7 +2,7 @@
 const add_task_input = document.getElementById("add-task-input");
 const add_task_reminder = document.getElementById("add-task-reminder");
 const tasks_list = document.getElementById("tasks");
-
+const alert = document.getElementById('alert-message');
 //element that currently editing
 let currentlyEditingTask = null;
 
@@ -50,10 +50,10 @@ function darkThemeBtnToggle(){
 // add task
 function add_task(){
     if (add_task_input.value.trim() === ""){ //checks if task name is set
-        alert("You should type something and then hit the button");
+        show_alert("You should type something and then hit the button" , 'error');
     }
     else if (add_task_reminder.value === ""){ //checks if task timer is set
-        alert("You should set a reminder date and time");
+        show_alert("You should set a reminder date and time" , 'error');
     }
     else { //adding new task by creating an li element
         let newElement = document.createElement("li"); 
@@ -75,7 +75,7 @@ function add_task(){
 
         // removing and setting by default the input content in add task section
         add_task_input.value = "";
-        add_task_reminder.value = "2099-12-20T00:00";
+        add_task_reminder.value = "2028-12-20T00:00";
 
         //adding the task to the tasks list
         tasks_list.appendChild(newElement);
@@ -266,7 +266,7 @@ function checkReminders() {
         const task = tasks[i];
         const reminderTime = parseInt(task.getAttribute('data-reminder'));
         if (reminderTime <= now && !task.classList.contains('reminded')) {
-            alert(`Reminder: ${task.textContent.trim()}`);
+            show_alert(`Reminder: ${task.textContent.trim()}`,'success');
             task.classList.add('reminded');
         }
     }
@@ -307,8 +307,32 @@ function rebindEventListeners() {
         task.ondrop = drop;           
         task.ondragover = dragOver;  
         task.ondragleave = leave; 
-        
+
     });
 }
+
+
+//alert section
+function show_alert(message , type ='alert'){
+    let color = '';
+    if(type == 'success'){
+        color = 'green';
+    }
+    else if(type == 'error'){
+        color = 'red';
+    }
+    else{
+        color = 'yellow';
+    }
+    const alert_message = document.querySelector('#alert-message p');
+    alert_message.innerHTML = message;
+    alert.style.borderColor = color;
+    alert.style.transform = 'none';
+}
+
+function close_alert(){
+    alert.style.transform = 'translateX(-200vw)';
+}
+
 // Call restoreTasks on page load
 window.onload = restoreTasks;

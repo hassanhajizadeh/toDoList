@@ -39,7 +39,9 @@
 
 
 body{
+    position: relative;
     background-color: var(--background);
+    overflow-x: hidden;
 }
 
 /*nav section styles including dark-light-mode button and the name of app*/
@@ -297,6 +299,45 @@ nav h1{
     margin-left: 20px;
     color: var(--secondary-text);
 }
+
+/* alert section */
+#alert-message{
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    max-width: 450px;
+    min-width: 350;
+    min-height: 100px;
+    background-color: var(--task-background);
+    color: var(--primary-text);
+    border-radius: 1rem;
+    box-shadow: 0px 0px 10px gray;
+    border-left: 10px solid;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    transform: translateX(-200vw);
+    transition: .3s ease transform;
+    margin-right: 10px;
+}
+
+#alert-message button{
+    background: none;
+    font-size: 20pt;
+    color: var(--primary-text);
+    border: none;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+#alert-message button:focus{
+    outline: none;
+}
+
+#alert-message button:hover{
+    color: red;
+}
+
 
 
 @media only screen and (max-width:600px){

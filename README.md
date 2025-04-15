@@ -1,24 +1,82 @@
-TO-DO List App
-Created using HTML , CSS , Vanilla JS
+# ✅ To-Do List App
 
-![alt text](<Screenshot from 2025-03-22 17-18-38.png>)
-![alt text](<Screenshot from 2025-03-22 17-18-53.png>)
-![alt text](<Screenshot from 2025-03-22 17-19-23.png>)
-![alt text](<Screenshot from 2025-03-22 17-19-51.png>)
-![alt text](<Screenshot from 2025-03-22 17-20-03.png>)
+A responsive, interactive, and clean **To-Do List App** to help you manage your daily tasks efficiently. Packed with essential features like drag-and-drop reordering, reminders, dark mode, and mobile-friendly design — it’s built for ease and comfort on any device.
 
-I made this options for tasks:
+---
 
-1. Mark task as done
-2. Reorder tasks by drag and drop
-3. Setting reminder for tasks
-4. Add , Delete and modify tasks
-5. Sort tasks based on latest(default) or deadlines. (just once change to see the sorting)
+## 👀 Preview
 
-I also used sessionStorage to store data, ensuring that it is deleted after closing the browser and does not occupy additional space on the user's device. Additionally, I have included a dark theme button for comfort and ease of use.
+![alt text](screenshots/demo1.png)
+![alt text](screenshots/demo2.png)
+![alt text](screenshots/demo3.png)
+![alt text](screenshots/demo6.png)
+![alt text](screenshots/demo4.png)
+![alt text](screenshots/demo5.png)
 
-inside the source code , codes are explained via comments. i tried cover all sections .
+---
 
-feel free to use the code .
+## ✨ Features
 
--hassan hajizadeh 
+-   ✅ **Mark Tasks as Done**  
+    Easily check off completed tasks.
+
+-   🔃 **Reorder Tasks with Drag and Drop**  
+    Organize your task list with smooth drag-and-drop support.
+
+-   ⏰ **Set Reminders for Tasks**  
+    Get reminded before your task is due.
+
+-   ➕ **Add Tasks**
+-   🗑️ **Delete Tasks**
+-   ✏️ **Edit Tasks**  
+    Fully manage your tasks from creation to completion.
+
+-   📅 **Sort Tasks**  
+    Toggle between latest-added (default) and deadline-based sorting.
+
+-   🌙 **Dark Theme Toggle**  
+    Switch between light and dark mode for better eye comfort.
+
+-   💾 **Session-Based Storage**  
+    Data is stored temporarily using `sessionStorage` and cleared automatically when the browser is closed — keeping storage usage minimal.
+
+-   📱 **Responsive Design**  
+    The app is fully responsive and works smoothly on desktops, tablets, and mobile devices.
+
+---
+
+## 🧠 Code Notes
+
+-   Code is clean and well-commented for easy understanding.
+-   Sections are logically organized for maintainability and customization.
+
+---
+
+## 🚀 Getting Started
+
+1. **Clone or Download** this repository.
+2. Open `index.html` in your browser.
+3. Start managing your tasks!
+
+---
+
+## ⚙️ Tech Stack
+
+-   HTML, CSS, JavaScript
+-   Drag and drop API
+-   CSS variables for theme switching
+-   `sessionStorage` for data handling
+
+---
+
+## 📌 Important Notes
+
+-   Data is not saved between sessions due to the use of sessionStorage. If you'd like to preserve data even after closing the browser, you can easily switch from sessionStorage to localStorage by replacing the relevant API calls in the code.
+
+---
+
+## 📄 License
+
+This project is open for use, learning, and modification. No attribution required — enjoy building!
+
+-Hassan Hajizadeh
