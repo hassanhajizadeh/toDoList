@@ -1,51 +1,51 @@
-:root{
+:root {
     /*Current theme pallete*/
-    --background : #1E1E2E;
-    --primary-text : #EAEAEA;
-    --secondary-text : #A0A0A0;
-    --task-background : #2A2A3C;
-    --completed-task : #3A3A4F;
-    --accent-color : #16A085;
-    --button-background : #2D2D44;
-    --button-hover : #3E3E5C;
+    --background: #1e1e2e;
+    --primary-text: #eaeaea;
+    --secondary-text: #a0a0a0;
+    --task-background: #2a2a3c;
+    --completed-task: #3a3a4f;
+    --accent-color: #16a085;
+    --button-background: #2d2d44;
+    --button-hover: #3e3e5c;
 
     /*Dark theme palette*/
-    --dark-background : #1E1E2E;
-    --dark-primary-text : #EAEAEA;
-    --dark-secondary-text : #A0A0A0;
-    --dark-task-background : #2A2A3C;
-    --dark-completed-task : #3A3A4F;
-    --dark-accent-color : #16A085;
-    --dark-button-background : #2D2D44;
-    --dark-button-hover : #3E3E5C;
+    --dark-background: #1e1e2e;
+    --dark-primary-text: #eaeaea;
+    --dark-secondary-text: #a0a0a0;
+    --dark-task-background: #2a2a3c;
+    --dark-completed-task: #3a3a4f;
+    --dark-accent-color: #16a085;
+    --dark-button-background: #2d2d44;
+    --dark-button-hover: #3e3e5c;
 
     /*Light theme palette*/
-    --light-background : #F8F9FA;
-    --light-primary-text : #333333;
-    --light-secondary-text : #666666;
-    --light-task-background : #FFFFFF;
-    --light-completed-task : #D9F7BE;
-    --light-accent-color : #16A085;
-    --light-button-background : #EAEAEA;
-    --light-button-hover : #D6D6D6;
+    --light-background: #f8f9fa;
+    --light-primary-text: #333333;
+    --light-secondary-text: #666666;
+    --light-task-background: #ffffff;
+    --light-completed-task: #d9f7be;
+    --light-accent-color: #16a085;
+    --light-button-background: #eaeaea;
+    --light-button-hover: #d6d6d6;
 }
 
-*{
+* {
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
     font-family: sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
-
-body{
+body {
     position: relative;
     background-color: var(--background);
     overflow-x: hidden;
 }
 
 /*nav section styles including dark-light-mode button and the name of app*/
-nav{
+nav {
     display: flex;
     width: 100%;
     align-items: center;
@@ -56,16 +56,16 @@ nav{
     color: var(--dark-primary-text);
 }
 /*name of app*/
-nav h1{
+nav h1 {
     text-transform: uppercase;
     color: var(--primary-text);
 }
 
 /*dark-light-mode button section*/
-#dark-theme-btn{
+#dark-theme-btn {
     display: none;
 }
-#dark-theme label{
+#dark-theme label {
     display: flex;
     align-items: center;
     padding: 0px 2px;
@@ -76,12 +76,12 @@ nav h1{
     background: transparent;
     cursor: pointer;
 }
-#bullet{
+#bullet {
     height: 22px;
     width: 22px;
     background-color: var(--accent-color);
     border-radius: 50%;
-    transition: .3s ease transform;
+    transition: 0.3s ease transform;
 }
 
 /*----------------------------------------------*/
@@ -89,7 +89,7 @@ nav h1{
 /*content section containing add-task and sorting functions  and tasks section*/
 
 /*content section as a container for the task-control and tasks*/
-#content{
+#content {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -99,12 +99,12 @@ nav h1{
 }
 
 /*task-controls section : a container for add-task and sorting sections  */
-#task-controls{
+#task-controls {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 10px;
-    border-radius: .4rem;
+    border-radius: 0.4rem;
     width: 100%;
     max-width: 600px;
     background-color: var(--button-background);
@@ -121,10 +121,10 @@ nav h1{
 }
 
 /*task-name input section in adding task  */
-#add-task input[type="text"]{
+#add-task input[type="text"] {
     background-color: var(--button-hover);
     color: var(--primary-text);
-    border-radius: .4rem;
+    border-radius: 0.4rem;
     font-size: 16px;
     border: none;
     margin: 10px;
@@ -133,10 +133,10 @@ nav h1{
 }
 
 /*task-reminder-date input section in adding task  */
-#add-task input[type="datetime-local"]{
+#add-task input[type="datetime-local"] {
     background-color: var(--button-hover);
     color: var(--primary-text);
-    border-radius: .4rem;
+    border-radius: 0.4rem;
     font-size: 16px;
     border: none;
     margin: 10px;
@@ -149,7 +149,7 @@ nav h1{
     background-color: var(--accent-color);
     color: var(--primary-text);
     border: none;
-    border-radius: .4rem;
+    border-radius: 0.4rem;
     padding: 10px 20px;
     width: 100%;
     margin: 10px;
@@ -161,12 +161,13 @@ nav h1{
     background-color: var(--button-hover);
 }
 
-#add-task input:focus, #add-task input[type="datetime-local"]:focus {
+#add-task input:focus,
+#add-task input[type="datetime-local"]:focus {
     outline: 1px solid var(--accent-color);
 }
 
 /*sorting section */
-#sort{
+#sort {
     height: 30px;
     border: 1px solid var(--secondary-text);
     color: var(--primary-text);
@@ -176,20 +177,19 @@ nav h1{
     cursor: pointer;
     border: none;
 }
-#sort option{
+#sort option {
     background-color: var(--button-background);
     color: var(--primary-text);
     cursor: pointer;
 }
 
-
 /*tasks section : a container for tasks*/
-#tasks{
+#tasks {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    border-radius: .4rem;
+    border-radius: 0.4rem;
     background-color: var(--button-background);
     padding: 20px;
     width: 100%;
@@ -197,9 +197,8 @@ nav h1{
     overflow-y: auto;
 }
 
-
 /*task styling*/
-#tasks li{
+#tasks li {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -207,70 +206,68 @@ nav h1{
     min-height: 80px;
     background-color: var(--task-background);
     color: var(--primary-text);
-    border-radius: .2rem;
+    border-radius: 0.2rem;
     margin: 5px 0px;
     padding: 20px;
     cursor: move;
-
 }
 
-.task-name{
+.task-name {
     width: 150px;
     text-transform: capitalize;
 }
 
 /*.task-icons : a container for task buttons (edit - delete - check )*/
-.task-icons{
+.task-icons {
     display: flex;
     min-width: 90px;
     justify-content: space-between;
 }
 
-.edit-task-icon{
+.edit-task-icon {
     fill: var(--accent-color);
     cursor: pointer;
 }
 
-.del-task-icon{
+.del-task-icon {
     fill: rgb(207, 1, 1);
     cursor: pointer;
 }
 
-.task_check{
+.task_check {
     width: 22px;
     height: 22px;
     cursor: pointer;
-    color: #1E1E2E;
+    color: #1e1e2e;
     accent-color: var(--button-background);
 }
 
-.task_check:checked{
+.task_check:checked {
     accent-color: var(--accent-color);
 }
 
 /*a class for showing a task is checked*/
-.checked{
+.checked {
     text-decoration: line-through var(--accent-color);
     text-decoration-thickness: 2px;
     background-color: var(--completed-task) !important;
 }
 
 /*a class for reordering tasks via drag and drop and showing it will place on which tasks before or after */
-.placeholder{
+.placeholder {
     background-color: var(--accent-color) !important;
     opacity: 0.8;
 }
 
-
 /*inputs for edit section of the task*/
 
-.task-on-edit{
+.task-on-edit {
     height: 200px !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
 }
-.edit-inputs-container{
+.edit-inputs-container {
     width: 100%;
     height: 120px;
     display: flex;
@@ -281,13 +278,13 @@ nav h1{
 .edit-task-reminder {
     background-color: var(--button-hover);
     color: var(--primary-text);
-    border-radius: .4rem;
+    border-radius: 0.4rem;
     font-size: 16px;
     border: none;
-    width: 100%; 
+    width: 100%;
     padding: 10px 20px;
-    box-sizing: border-box; 
-    height: 30px; 
+    box-sizing: border-box;
+    height: 30px;
 }
 
 .edit-task-input:focus,
@@ -301,7 +298,7 @@ nav h1{
 }
 
 /* alert section */
-#alert-message{
+#alert-message {
     position: fixed;
     bottom: 10px;
     left: 10px;
@@ -317,11 +314,11 @@ nav h1{
     justify-content: space-between;
     padding: 10px;
     transform: translateX(-200vw);
-    transition: .3s ease transform;
+    transition: 0.3s ease transform;
     margin-right: 10px;
 }
 
-#alert-message button{
+#alert-message button {
     background: none;
     font-size: 20pt;
     color: var(--primary-text);
@@ -330,24 +327,22 @@ nav h1{
     width: 30px;
     cursor: pointer;
 }
-#alert-message button:focus{
+#alert-message button:focus {
     outline: none;
 }
 
-#alert-message button:hover{
+#alert-message button:hover {
     color: red;
 }
 
-
-
-@media only screen and (max-width:600px){
-    #tasks li{
+@media only screen and (max-width: 600px) {
+    #tasks li {
         flex-direction: column;
     }
-    .task-name{
+    .task-name {
         text-align: center;
     }
-    .task-reminder{
+    .task-reminder {
         text-align: center;
         margin: 15px auto;
     }
